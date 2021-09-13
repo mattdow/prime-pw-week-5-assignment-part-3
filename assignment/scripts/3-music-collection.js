@@ -20,3 +20,12 @@ console.log('Added album to collection:', addToCollection('Singularity', 'Jon Ho
 console.log('Added album to collection:', addToCollection('Fantasma', 'Cornelius', 1998));
 console.log('Added album to collection:', addToCollection('ATLiens', 'Outkast', 1996));
 console.log('Added album to collection:', addToCollection('Point', 'Cornelius', 2002));
+
+function showCollection(array) {
+  console.log(`Number of albums in collection is ${array.length}:`);
+  for (album of array) {
+    console.log(`${album.title} by ${album.artist}, published in ${album.yearPublished}`);
+  } //end of for loop
+} // end of showCollection function
+
+showCollection(collection);
