@@ -90,37 +90,50 @@ function albumSearch(searchCriteria) {
     return collection;
     }
   for (album of collection) { // looping through each album in the collection
-    // creating a conditional that checks for a match between both artist and year
-    // properties for searchCriteria and collection objects
+    // Creating a nested conditional that checks for a match for artist and year if both are given
     // console.log(album.artist, album.yearPublished, 'vs', searchCriteria.artist, searchCriteria.year);
-    if (album.artist === searchCriteria.artist &&
-    album.yearPublished === searchCriteria.year) {
-      resultsArray.push(album);
-    } // end of criteria check
+    if ((!searchCriteria.artist || // if nothing submitted for artist, this conditional won't check for artist match
+      (album.artist === searchCriteria.artist)) &&
+      (!searchCriteria.year || // if nothing submitted for year, conditional won't check for year match
+      (album.yearPublished === searchCriteria.year))) {
+        if (searchCriteria.trackName) { // verifying something is inputted for a trackName to check
+          for (track of album.tracks) { // if artist and year match or are empty, check tracks
+            if (searchCriteria.trackName === track.name) {
+              resultsArray.push(album);
+            }
+          } // end of track loop
+        } else resultsArray.push(album); // if there is no trackName given, the
+        // album is added if any year and artist search terms that are given match
+    } // end of year and artist criteria check
   } // end of loop through the albums in collection
   return resultsArray; // return the matches in the array
-} // end of albumSearch functions
+} // end of albumSearch function
 
 // I'll test this function by calling the results of albumSearch in the showCollection function,
 // since showCollection works for any array.
 
-// Testing for two albums in the collection that have multiple items with that year or artists
+// Testing for three albums in the collection that have multiple items with that year or artists
 
 console.log('2018 Jon Hopkins albums in collection (should show one titled Singularity):');
-showCollection((albumSearch({artist: 'Jon Hopkins', year: 2018})));
+showCollection((albumSearch({artist: 'Jon Hopkins', year: 2018, trackName: 'Emerald Rush'})));
+
+// Testing when the track name is not a match
+
+console.log('2018 Jon Hopkins albums in collection (should show none b/c Jolene is not a track):');
+showCollection((albumSearch({artist: 'Jon Hopkins', year: 2018, trackName: 'Jolene'})));
 
 console.log('1998 Outkast albums in collection (should show one titled Aquemini):');
 showCollection((albumSearch({artist: 'Outkast', year: 1998})));
 
-console.log('1998 Cornelius albums in collection (should show one titled Fantasma):');
-showCollection((albumSearch({artist: 'Cornelius', year: 1998})));
+console.log('Cornelius albums with "Mic Check" in collection (should show Fantasma):');
+showCollection((albumSearch({artist: 'Cornelius', trackName: 'Mic Check'})));
 
 // Testing for an album that would never be in my collection
 
 console.log('1999 Crazy Town albums in collection (should show none):');
 showCollection((albumSearch({artist: 'Crazy Town', year: 1999})));
 
-// Testing for searches that match only one searchCriteria
+// Testing for searches with one good search term, but one bad one
 
 console.log('2016 Jon Hopkins albums in collection (should show none):');
 showCollection((albumSearch({artist: 'Jon Hopkins', year: 2016})));
@@ -128,10 +141,28 @@ showCollection((albumSearch({artist: 'Jon Hopkins', year: 2016})));
 console.log('2018 Mitski albums in collection (should show none):');
 showCollection((albumSearch({artist: 'Mitski', year: 1998})));
 
+// Testing for searches with good terms but some terms blank
+
+console.log('2018 albums in collection (should show Double Negative and Singularity):');
+showCollection((albumSearch({year: 2018})));
+
+console.log('Outkast albums in collection (should show Aquemini and ATLiens):');
+showCollection((albumSearch({artist: 'Outkast'})));
+
+console.log('2018 Albums with the song "Fly" (Double Negative):');
+showCollection((albumSearch({trackName: 'Fly'})));
+
+// Testing if the album is right but the track name is wrong
+
+console.log('Outkast Albums with the song "Fly" (none):');
+showCollection((albumSearch({trackName: 'Fly', artist: 'Outkast'})));
+
 // Testing for searches with nothing or an empty object.
 
+/*
 console.log('Testing albumSearch with no criteria (should show the full collection):');
 showCollection((albumSearch()));
 
 console.log('Testing albumSearch with empty criteria (should show the full collection):');
 showCollection((albumSearch({})));
+*/
