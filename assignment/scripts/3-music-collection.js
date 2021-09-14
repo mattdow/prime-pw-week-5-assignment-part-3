@@ -3,7 +3,7 @@ let collection = [];
 // establish empty array variable
 
 function addToCollection(albumTitle, albumArtist, albumYearPublished, albumTracks) {
-  newAlbum = {
+  let newAlbum = {
     title: albumTitle,
     artist: albumArtist,
     yearPublished: albumYearPublished,
@@ -41,9 +41,9 @@ function showCollection(array) {
     // calling each of the array properties in a template literal
     console.log(`${album.title} by ${album.artist}, published in ${album.yearPublished}:`);
     // create another loop for all of the album tracks
-    for (let i = 0; i < album.tracks.length; i++) {
-      console.log(`${i+1}. NAME: ${album.tracks[i].name} DURATION: ${album.tracks[i].duration}`);
-    } // end of loop through tracks
+     for (let i = 0; i < album.tracks.length; i++) {
+       console.log(`${i+1}. NAME: ${album.tracks[i].name} DURATION: ${album.tracks[i].duration}`);
+     } // end of loop through tracks
   } // end of loop through albums
 } // end of showCollection function
 
@@ -80,7 +80,7 @@ function albumSearch(searchCriteria) {
   // console.log('In albumSearch');
   let resultsArray = [];
   // First checking to see if searchCriteria is empty, because we need to return
-  // the full collection in that case and not go through the function. To check
+  // the full collection in that case and not go through the full function. To check
   // for an empty object, I Googled for a solution and decided to use the
   // Object.keys property, which should be an empty array if serachCriteria is
   // empty.
@@ -92,9 +92,9 @@ function albumSearch(searchCriteria) {
   for (album of collection) { // looping through each album in the collection
     // Creating a nested conditional that checks for a match for artist and year if both are given
     // console.log(album.artist, album.yearPublished, 'vs', searchCriteria.artist, searchCriteria.year);
-    if ((!searchCriteria.artist || // if nothing submitted for artist, this conditional won't check for artist match
+    if ((!searchCriteria.artist || // if nothing submitted for artist, this conditional won't require artist match
       (album.artist === searchCriteria.artist)) &&
-      (!searchCriteria.year || // if nothing submitted for year, conditional won't check for year match
+      (!searchCriteria.year || // if nothing submitted for year, conditional won't require year match
       (album.yearPublished === searchCriteria.year))) {
         if (searchCriteria.trackName) { // verifying something is inputted for a trackName to check
           for (track of album.tracks) { // if artist and year match or are empty, check tracks
@@ -159,6 +159,12 @@ showCollection((albumSearch({trackName: 'ATLiens'})));
 
 console.log('Outkast Albums with the song "Fly" (none):');
 showCollection((albumSearch({trackName: 'Fly', artist: 'Outkast'})));
+
+console.log('Low 2018 albums, trackName empty (Double Negative):');
+showCollection((albumSearch({artist: 'Low', year: 2018, trackName: ''})));
+
+console.log('Low 2018 albums, trackName gibberish (None):');
+showCollection((albumSearch({artist: 'Low', year: 2018, trackName: 'asdf'})));
 
 // Testing for searches with nothing or an empty object.
 
