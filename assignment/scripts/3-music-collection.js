@@ -149,8 +149,11 @@ showCollection((albumSearch({year: 2018})));
 console.log('Outkast albums in collection (should show Aquemini and ATLiens):');
 showCollection((albumSearch({artist: 'Outkast'})));
 
-console.log('2018 Albums with the song "Fly" (Double Negative):');
+console.log('Albums with the song "Fly" (Double Negative):');
 showCollection((albumSearch({trackName: 'Fly'})));
+
+console.log('Albums with the song "ATLiens" (ATLiens):');
+showCollection((albumSearch({trackName: 'ATLiens'})));
 
 // Testing if the album is right but the track name is wrong
 
@@ -159,10 +162,8 @@ showCollection((albumSearch({trackName: 'Fly', artist: 'Outkast'})));
 
 // Testing for searches with nothing or an empty object.
 
-/*
 console.log('Testing albumSearch with no criteria (should show the full collection):');
 showCollection((albumSearch()));
 
 console.log('Testing albumSearch with empty criteria (should show the full collection):');
 showCollection((albumSearch({})));
-*/
