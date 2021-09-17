@@ -2,12 +2,12 @@ console.log('***** Music Collection *****')
 let collection = [];
 // establish empty array variable
 
-function addToCollection(albumTitle, albumArtist, albumYearPublished, albumTracks) {
+function addToCollection(title, artist, yearPublished, tracks) {
   let newAlbum = {
-    title: albumTitle,
-    artist: albumArtist,
-    yearPublished: albumYearPublished,
-    tracks: albumTracks
+    title: title,
+    artist: artist,
+    yearPublished: yearPublished,
+    tracks: tracks
 // assign the variables given to the appropriate object properties
 };
   collection.push(newAlbum);
@@ -34,13 +34,16 @@ console.log('Added album to collection:', addToCollection('Point', 'Cornelius', 
 [{name: 'Bug', duration: '0:40'}, {name: 'Point of View Point', duration: '3:56'},
 {name: 'Smoke', duration: '5:50'}]));
 
+console.log(collection);
+
 function showCollection(array) {
   // use the length property of the array to print the number of albums in the collection
   console.log(`Number of albums in collection is ${array.length}:`);
+  // loop through all the albums in the given array
   for (album of array) {
     // calling each of the array properties in a template literal
     console.log(`${album.title} by ${album.artist}, published in ${album.yearPublished}:`);
-    // create another loop for all of the album tracks
+    // create an embedded loop for all of the album tracks
      for (let i = 0; i < album.tracks.length; i++) {
        console.log(`${i+1}. NAME: ${album.tracks[i].name} DURATION: ${album.tracks[i].duration}`);
      } // end of loop through tracks
@@ -74,7 +77,13 @@ showCollection(findByArtist('Cornelius'));
 console.log('Crazy Town albums in collection (should show none):');
 showCollection(findByArtist('Crazy Town'));
 
-// Creating albumSearch functions
+// ********** Creating albumSearch function **********
+// After discussion with Nick from Solinas and
+// some thought, I realized my approach here is more complicated than necessary.
+// I start with an empty array, which I need to fill with any matches, or with
+// the entire collection if no search criteria are given. A smarter approach
+// would be to start with a full array and eliminate any non-matches for any
+// search criteria given. However, my code works (I think), so I'll
 
 function albumSearch(searchCriteria) {
   // console.log('In albumSearch');
@@ -82,7 +91,7 @@ function albumSearch(searchCriteria) {
   // First checking to see if searchCriteria is empty, because we need to return
   // the full collection in that case and not go through the full function. To check
   // for an empty object, I Googled for a solution and decided to use the
-  // Object.keys property, which should be an empty array if serachCriteria is
+  // Object.keys property, which should be an empty array if searchCriteria is
   // empty.
 
   if (searchCriteria === undefined || Object.keys(searchCriteria).length === 0) {
@@ -103,7 +112,7 @@ function albumSearch(searchCriteria) {
             }
           } // end of track loop
         } else resultsArray.push(album); // if there is no trackName given, the
-        // album is added if any year and artist search terms that are given match
+        // album is added if any year and artist search terms provided match
     } // end of year and artist criteria check
   } // end of loop through the albums in collection
   return resultsArray; // return the matches in the array
@@ -130,8 +139,8 @@ showCollection((albumSearch({artist: 'Cornelius', trackName: 'Mic Check'})));
 
 // Testing for an album that would never be in my collection
 
-console.log('1999 Crazy Town albums in collection (should show none):');
-showCollection((albumSearch({artist: 'Crazy Town', year: 1999})));
+console.log('1998 Crazy Town albums in collection (should show none):');
+showCollection((albumSearch({artist: 'Crazy Town', year: 1998})));
 
 // Testing for searches with one good search term, but one bad one
 
